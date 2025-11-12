@@ -32,12 +32,11 @@ async function imageUrlToBase64(imageUrl) {
 //   });
 
 async function loadImage(url) {
-  return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
+  return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.crossOrigin = 'anonymous'; i.src = url; });
 }
 
 async function url2base64(url) {
   let img = await loadImage(url);
-  // img.crossOrigin = 'anonymous';
   const myCanvas = document.createElement('canvas');
   document.body.appendChild(myCanvas);
   myCanvas.getContext('2d').drawImage(img, 0, 0);
