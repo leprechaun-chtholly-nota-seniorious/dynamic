@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Test</title>
+    <meta content="text/html;charset=UTF-8" http-equiv="Content-Type"/>
 	</head>
 	<body>
 		<script>
@@ -21,14 +22,30 @@ async function imageUrlToBase64(imageUrl) {
   }
 }
 
-// Example usage:
-imageUrlToBase64(location.search.substring(1))
-  .then(base64Image => {
-    console.log(base64Image);
-  })
-  .catch(error => {
-    console.error('Operation failed:', error);
-  });
+// // Example usage:
+// imageUrlToBase64(location.search.substring(1))
+//   .then(base64Image => {
+//     console.log(base64Image);
+//   })
+//   .catch(error => {
+//     console.error('Operation failed:', error);
+//   });
+
+async function loadImage(url) {
+  return new Promise(r => { let i = new Image(); i.onload = (() => r(i)); i.src = url; });
+}
+
+async function url2base64(url) {
+  let img = await loadImage(url);
+  // img.crossOrigin = 'anonymous';
+  const myCanvas = document.createElement('canvas');
+  document.body.appendChild(myCanvas);
+  myCanvas.getContext('2d').drawImage(img, 0, 0);
+  const base64Image = myCanvas.toDataURL('image/webp');
+  console.log(base64Image);
+}
+
+url2base64(location.search.substring(1));
 		</script>
 	</body>
 </html>
